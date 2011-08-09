@@ -8,8 +8,17 @@
 <script src="../../../support/jasmine/jasmine.js"></script>
 <script src="../../../support/jasmine/jasmine-html.js"></script>
 
-<script src="../querystring.js"></script>
-<script src="querystring-spec.js"></script>
+<script>
+  if (location.search.indexOf('native') === -1) {
+    if (typeof console !== 'undefined') {
+      console.warn('es5-safe is turned on.');
+    }
+    Function.prototype.bind = null;
+  }
+</script>
+
+<script src="../es5-safe.js"></script>
+<script src="function-bind-spec.js"></script>
 
 </head>
 <body>

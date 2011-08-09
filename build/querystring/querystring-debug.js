@@ -166,12 +166,11 @@ define([], function(require, exports) {
 
 
   /**
-   * If the type of val is null, undefined, number, string, boolean,
+   * If the type of o is null, undefined, number, string, boolean,
    * return true.
    */
-  function isPrimitive(val) {
-    var t = typeof val;
-    return val == null || (t !== 'object' && t !== 'function');
+  function isPrimitive(o) {
+    return o !== Object(o);
   }
 
 });

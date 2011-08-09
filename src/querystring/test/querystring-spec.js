@@ -1,9 +1,9 @@
 
-define(function(require) {
+(function() {
 
-  var qs = require('../querystring');
+  var qs = QueryString;
 
-
+  
   var normalCases = [
     [ 'foo=bar', { 'foo': 'bar' }, 'foo=bar' ]
     ,[ 'foo=1&bar=2', { 'foo': '1', 'bar': '2' }, 'foo=1&bar=2' ]
@@ -140,4 +140,4 @@ define(function(require) {
 
   });
 
-});
+})();

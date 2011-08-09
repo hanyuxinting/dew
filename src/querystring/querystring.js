@@ -12,7 +12,15 @@
  *   - http://developer.yahoo.com/yui/3/api/QueryString.html
  */
 
-define([], function(require, exports) {
+(function(factory) {
+
+  if (typeof define === 'function') {
+    define([], factory);
+  } else {
+    factory(null, (this.QueryString = {}));
+  }
+
+})(function(require, exports) {
 
   exports.version = '1.0.0';
 
@@ -166,12 +174,11 @@ define([], function(require, exports) {
 
 
   /**
-   * If the type of val is null, undefined, number, string, boolean,
+   * If the type of o is null, undefined, number, string, boolean,
    * return true.
    */
-  function isPrimitive(val) {
-    var t = typeof val;
-    return val == null || (t !== 'object' && t !== 'function');
+  function isPrimitive(o) {
+    return o !== Object(o);
   }
 
 });
