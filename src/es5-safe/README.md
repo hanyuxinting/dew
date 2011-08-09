@@ -1,28 +1,28 @@
-## ES5 Safe
+## ES5 Safe Shims
 
 This module provides compatibility shims so that legacy JavaScript engines
 behave as closely as possible to ES5.
 
 It provides the following methods:
 
-* Function.prototype.bind
-* Object.create
-* Object.keys
-* Array.isArray
-* Array.prototype.forEach
-* Array.prototype.map
-* Array.prototype.filter
-* Array.prototype.every
-* Array.prototype.some
-* Array.prototype.reduce
-* Array.prototype.reduceRight
-* Array.prototype.indexOf
-* Array.prototype.lastIndexOf
-* String.prototype.trim
-* Date.now
-* Date.parse (for ISO parsing)
-* Date.prototype.toISOString
-* Date.prototype.toJSON
+    Function.prototype.bind
+    Object.create
+    Object.keys
+    Array.isArray
+    Array.prototype.forEach
+    Array.prototype.map
+    Array.prototype.filter
+    Array.prototype.every
+    Array.prototype.some
+    Array.prototype.reduce
+    Array.prototype.reduceRight
+    Array.prototype.indexOf
+    Array.prototype.lastIndexOf
+    String.prototype.trim
+    Date.now
+    Date.parse (for ISO parsing)
+    Date.prototype.toISOString
+    Date.prototype.toJSON
 
 Please refer to [MDN](https://developer.mozilla.org/En/JavaScript/ECMAScript_5_support_in_Mozilla) for detail usages.
 
