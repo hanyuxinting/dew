@@ -3,7 +3,7 @@
   var global = this;
 
   function assertEquals(expected, actual) {
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(expected);
   }
 
   function assertTrue(actual) {
@@ -15,14 +15,14 @@
 //  }
 
 
-  // http://code.google.com/p/v8/source/browse/branches/bleeding_edge/test/mjsunit/function-bind.js
+  // http://code.google.com/p/v8/source/browse/trunk/test/mjsunit/function-bind.js
   describe('Function.prototype.bind', function() {
 
     function foo(x, y, z) {
       return x + y + z;
     }
 
-    it('Simple tests', function() {
+    it('Simple tests.', function() {
       var f = foo.bind(foo);
       assertEquals(3, f(1, 1, 1));
       //assertEquals(3, f.length);
@@ -176,6 +176,20 @@
       // Test instanceof obj2 is bar, not f.
       assertTrue(obj2 instanceof bar);
       //assertFalse(obj2 instanceof f);
+
+    });
+
+    it('Test that bind is called on non-callable objects.', function() {
+      var o = { bind: Function.prototype.bind };
+
+      var passed = false;
+      try {
+        o.bind();
+      } catch(e) {
+        passed = true;
+      }
+
+      assertEquals(true, passed);
 
     });
 

@@ -9,16 +9,40 @@
 <script src="../../../support/jasmine/jasmine-html.js"></script>
 
 <script>
+
+  var IS_NATIVE = true;
+
   if (location.search.indexOf('native') === -1) {
     if (typeof console !== 'undefined') {
       console.warn('es5-safe is turned on.');
     }
+
+
     Function.prototype.bind = null;
+
+    Object.create = null;
+    Object.keys = null;
+
+    Array.isArray = null;
+
+    // iteration
+    Array.prototype.forEach = null;
+    Array.prototype.map = null;
+    Array.prototype.filter = null;
+    Array.prototype.every = null;
+    Array.prototype.some = null;
+
+    
+
+    IS_NATIVE = false;
   }
 </script>
 
 <script src="../es5-safe.js"></script>
+
 <script src="function-bind-spec.js"></script>
+<script src="object-spec.js"></script>
+<script src="array-spec.js"></script>
 
 </head>
 <body>

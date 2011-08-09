@@ -13,6 +13,8 @@
  *   - http://es5.github.com/
  *   - http://kangax.github.com/es5-compat-table/
  *   - https://github.com/kriskowal/es5-shim
+ *   - http://perfectionkills.com/extending-built-in-native-objects-evil-or-not/
+ *   - https://gist.github.com/1120592
  */
 
 (function(factory) {
@@ -35,6 +37,7 @@
   /*---------------------------------------*
    * Function
    *---------------------------------------*/
+
 
   // ES-5 15.3.4.5
   // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/bind
@@ -67,6 +70,7 @@
    * Object
    *---------------------------------------*/
   // http://ejohn.org/blog/ecmascript-5-objects-and-properties/
+
 
   // ES5 15.2.3.5
   // http://stackoverflow.com/questions/3075308/what-modernizer-scripts-exist-for-the-new-ecmascript-5-functions
@@ -123,8 +127,9 @@
 
       if (hasDontEnumBug) {
         for (var i = 0; i < DontEnumsLength; i++) {
-          if (hasOwnProperty.call(o, DontEnums[i]))
+          if (hasOwnProperty.call(o, DontEnums[i])) {
             result.push(DontEnums[i]);
+          }
         }
       }
 
@@ -137,6 +142,9 @@
   /*---------------------------------------*
    * Array
    *---------------------------------------*/
+  // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array
+  // https://github.com/kangax/fabric.js/blob/gh-pages/src/util/lang_array.js
+
 
   // ES5 15.4.3.2
   // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/isArray
@@ -147,68 +155,67 @@
 
   // ES5 15.4.4.18
   // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/array/foreach
-  AP.forEach || (AP.forEach = function (callback, thisArg) {
-    var len = +this.length;
-    for (var i = 0; i < len; i++) {
+  AP.forEach || (AP.forEach = function (fn, context) {
+    for (var i = 0, len = this.length >>> 0; i < len; i++) {
       if (i in this) {
-        callback.call(thisArg, this[i], i, this);
+        fn.call(context, this[i], i, this);
       }
     }
   });
 
 
-// ES5 15.4.4.19
-// https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/map
-  if (!Array.prototype.map) {
-    Array.prototype.map = function map(fun /*, thisp*/) {
-      var len = +this.length;
-      if (typeof fun !== "function")
-        throw new TypeError();
-
-      var res = new Array(len);
-      var thisp = arguments[1];
-      for (var i = 0; i < len; i++) {
-        if (i in this)
-          res[i] = fun.call(thisp, this[i], i, this);
+  // ES5 15.4.4.19
+  // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/map
+  AP.map || (AP.map = function map(fn, context) {
+    var result = [];
+    for (var i = 0, len = this.length >>> 0; i < len; i++) {
+      if (i in this) {
+        result[i] = fn.call(context, this[i], i, this);
       }
+    }
+    return result;
+  });
 
-      return res;
-    };
-  }
 
-// ES5 15.4.4.20
-  if (!Array.prototype.filter) {
-    Array.prototype.filter = function filter(block /*, thisp */) {
-      var values = [];
-      var thisp = arguments[1];
-      for (var i = 0; i < this.length; i++)
-        if (block.call(thisp, this[i]))
-          values.push(this[i]);
-      return values;
-    };
-  }
+  // ES5 15.4.4.20
+  // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/filter
+  AP.filter || (AP.filter = function filter(fn, context) {
+    var result = [], val;
+    for (var i = 0, len = this.length >>> 0; i < len; i++) {
+      if (i in this) {
+        val = this[i]; // in case fn mutates this
+        if (fn.call(context, val, i, this)) {
+          result.push(val);
+        }
+      }
+    }
+    return result;
+  });
 
-// ES5 15.4.4.16
-  if (!Array.prototype.every) {
-    Array.prototype.every = function every(block /*, thisp */) {
-      var thisp = arguments[1];
-      for (var i = 0; i < this.length; i++)
-        if (!block.call(thisp, this[i]))
-          return false;
-      return true;
-    };
-  }
 
-// ES5 15.4.4.17
-  if (!Array.prototype.some) {
-    Array.prototype.some = function some(block /*, thisp */) {
-      var thisp = arguments[1];
-      for (var i = 0; i < this.length; i++)
-        if (block.call(thisp, this[i]))
-          return true;
-      return false;
-    };
-  }
+  // ES5 15.4.4.16
+  // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/every
+  AP.every || (AP.every = function(fn, context) {
+    for (var i = 0, len = this.length >>> 0; i < len; i++) {
+      if (i in this && !fn.call(context, this[i], i, this)) {
+        return false;
+      }
+    }
+    return true;
+  });
+
+
+  // ES5 15.4.4.17
+  // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/some
+  AP.some || (AP.some = function(fn, context) {
+    for (var i = 0, len = this.length >>> 0; i < len; i++) {
+      if (i in this && fn.call(context, this[i], i, this)) {
+        return true;
+      }
+    }
+    return false;
+  });
+
 
 // ES5 15.4.4.21
 // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/reduce
