@@ -8,6 +8,21 @@
 <script src="../../../support/jasmine/jasmine.js"></script>
 <script src="../../../support/jasmine/jasmine-html.js"></script>
 
+<script>
+
+  var IS_NATIVE = true;
+
+  if (location.search.indexOf('native') === -1) {
+    if (typeof console !== 'undefined') {
+      console.log('Using custom JSON now.');
+    }
+
+    this.JSON = null;
+
+    IS_NATIVE = false;
+  }
+</script>
+
 <script src="../json.js"></script>
 <!--<script src="../../../build/json/json.js"></script>-->
 <script src="json-spec.js"></script>
