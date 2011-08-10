@@ -15,6 +15,7 @@
  *   - https://github.com/kriskowal/es5-shim
  *   - http://perfectionkills.com/extending-built-in-native-objects-evil-or-not/
  *   - https://gist.github.com/1120592
+ *   - https://code.google.com/p/v8/
  */
 
 (function(factory) {
@@ -30,6 +31,7 @@
   var OP = Object.prototype;
   var AP = Array.prototype;
   var FP = Function.prototype;
+  var SP = String.prototype;
   var hasOwnProperty = OP.hasOwnProperty;
   var slice = AP.slice;
 
@@ -37,7 +39,6 @@
   /*---------------------------------------*
    * Function
    *---------------------------------------*/
-
 
   // ES-5 15.3.4.5
   // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/bind
@@ -70,7 +71,6 @@
    * Object
    *---------------------------------------*/
   // http://ejohn.org/blog/ecmascript-5-objects-and-properties/
-
 
   // ES5 15.2.3.5
   // http://stackoverflow.com/questions/3075308/what-modernizer-scripts-exist-for-the-new-ecmascript-5-functions
@@ -145,7 +145,6 @@
   // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array
   // https://github.com/kangax/fabric.js/blob/gh-pages/src/util/lang_array.js
 
-
   // ES5 15.4.3.2
   // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/isArray
   Array.isArray || (Array.isArray = function (obj) {
@@ -166,7 +165,7 @@
 
   // ES5 15.4.4.19
   // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/map
-  AP.map || (AP.map = function map(fn, context) {
+  AP.map || (AP.map = function (fn, context) {
     var result = [];
     for (var i = 0, len = this.length >>> 0; i < len; i++) {
       if (i in this) {
@@ -179,7 +178,7 @@
 
   // ES5 15.4.4.20
   // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/filter
-  AP.filter || (AP.filter = function filter(fn, context) {
+  AP.filter || (AP.filter = function (fn, context) {
     var result = [], val;
     for (var i = 0, len = this.length >>> 0; i < len; i++) {
       if (i in this) {
@@ -195,7 +194,7 @@
 
   // ES5 15.4.4.16
   // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/every
-  AP.every || (AP.every = function(fn, context) {
+  AP.every || (AP.every = function (fn, context) {
     for (var i = 0, len = this.length >>> 0; i < len; i++) {
       if (i in this && !fn.call(context, this[i], i, this)) {
         return false;
@@ -207,7 +206,7 @@
 
   // ES5 15.4.4.17
   // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/some
-  AP.some || (AP.some = function(fn, context) {
+  AP.some || (AP.some = function (fn, context) {
     for (var i = 0, len = this.length >>> 0; i < len; i++) {
       if (i in this && fn.call(context, this[i], i, this)) {
         return true;
@@ -219,7 +218,7 @@
 
   // ES5 15.4.4.21
   // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/reduce
-  AP.reduce || (AP.reduce = function(fn /*, initial*/) {
+  AP.reduce || (AP.reduce = function (fn /*, initial*/) {
     if(typeof fn !== 'function') {
       throw new TypeError(fn + ' is not an function');
     }
@@ -255,7 +254,7 @@
 
   // ES5 15.4.4.22
   // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/reduceRight
-  AP.reduceRight || (AP.reduceRight = function reduceRight(fn /*, initial*/) {
+  AP.reduceRight || (AP.reduceRight = function (fn /*, initial*/) {
     if(typeof fn !== 'function') {
       throw new TypeError(fn + ' is not an function');
     }
@@ -290,7 +289,7 @@
   
   // ES5 15.4.4.14
   // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/indexOf
-  AP.indexOf || (AP.indexOf = function(value, from) {
+  AP.indexOf || (AP.indexOf = function (value, from) {
     var len = this.length >>> 0;
 
     from = Number(from) || 0;
@@ -311,7 +310,7 @@
 
   // ES5 15.4.4.15
   // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/indexOf
-  AP.lastIndexOf || (AP.lastIndexOf = function(value, from) {
+  AP.lastIndexOf || (AP.lastIndexOf = function (value, from) {
     var len = this.length >>> 0;
 
     from = Number(from) || len - 1;
@@ -334,6 +333,23 @@
    * String
    *---------------------------------------*/
 
-  
+  // ES5 15.5.4.20
+  // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String/trim
+  // http://blog.stevenlevithan.com/archives/faster-trim-javascript
+  // http://jsperf.com/mega-trim-test
+  SP.trim || (SP.trim = function () {
+    return String(this).replace(/^[\s\u200B]+/, '').replace(/[\s\u200B]+$/, '');
+  });
 
+
+  /*---------------------------------------*
+   * Date
+   *---------------------------------------*/
+
+  // ES5 15.9.4.4
+  // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Date/now
+  Date.now || (Date.now = function () {
+    return new Date().getTime();
+  });
+  
 });

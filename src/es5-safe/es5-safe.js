@@ -15,6 +15,7 @@
  *   - https://github.com/kriskowal/es5-shim
  *   - http://perfectionkills.com/extending-built-in-native-objects-evil-or-not/
  *   - https://gist.github.com/1120592
+ *   - https://code.google.com/p/v8/
  */
 
 (function(factory) {
