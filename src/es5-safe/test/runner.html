@@ -38,6 +38,10 @@
     Array.prototype.indexOf = null;
     Array.prototype.lastIndexOf = null;
 
+    String.prototype.trim = null;
+
+    Date.now = null;
+
 
     IS_NATIVE = false;
   }
@@ -51,6 +55,8 @@
 <script src="array-iteration-spec.js"></script>
 <script src="array-reduce-spec.js"></script>
 <script src="array-indexing-spec.js"></script>
+<script src="string-trim-spec.js"></script>
+<script src="date-spec.js"></script>
 
 </head>
 <body>

@@ -20,9 +20,6 @@ It provides the following methods:
     Array.prototype.lastIndexOf
     String.prototype.trim
     Date.now
-    Date.parse (for ISO parsing)
-    Date.prototype.toISOString
-    Date.prototype.toJSON
 
 Please refer to [MDN](https://developer.mozilla.org/En/JavaScript/ECMAScript_5_support_in_Mozilla) for detail usages.
 
