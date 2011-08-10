@@ -6,59 +6,64 @@
 /**
  * @fileoverview Provides compatibility shims so that legacy JavaScript
  * engines behave as closely as possible to ES5.
+ *
  * @author lifesinger@gmail.com (Frank Wang)
  *
  * @see Thanks to:
  *   - http://es5.github.com/
  *   - http://kangax.github.com/es5-compat-table/
  *   - https://github.com/kriskowal/es5-shim
+ *   - http://perfectionkills.com/extending-built-in-native-objects-evil-or-not/
+ *   - https://gist.github.com/1120592
  */
 
-define(function() {
+(function(factory) {
+
+  if (typeof define === 'function') {
+    define([], factory);
+  } else {
+    factory();
+  }
+
+})(function() {
 
   var OP = Object.prototype;
   var AP = Array.prototype;
   var FP = Function.prototype;
+  var hasOwnProperty = OP.hasOwnProperty;
+  var slice = AP.slice;
 
 
   /*---------------------------------------*
    * Function
    *---------------------------------------*/
 
+
   // ES-5 15.3.4.5
   // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/bind
-
-  FP.bind = FP.bind || function (that) { // .length is 1
-    // 1. Let Target be the this value.
+  FP.bind || (FP.bind = function (that) {
     var target = this;
-    var isCallable = typeof target === 'function';
 
-    // 2. If IsCallable(Target) is false, throw a TypeError exception.
-    if (!isCallable) {
+    // If IsCallable(func) is false, throw a TypeError exception.
+    if (typeof target !== 'function') {
       throw new TypeError('Bind must be called on a function');
     }
 
-    // 3. Let A be a new (possibly empty) internal list of all of the
-    //    argument values provided after thisArg (arg1, arg2 etc), in order.
-    var args = AP.slice.call(arguments, 1);
+    var boundArgs = slice.call(arguments, 1);
 
-    function F() {
-      if (this instanceof F) {
-        var self = Object.create(target.prototype);
-        target.apply(self, args.concat(AP.slice.call(arguments)));
-        return self;
-      }
-      else {
-        return target.call.apply(
-            target,
-            args.concat(AP.slice.call(arguments))
-        );
-      }
+    function bound() {
+      return target.apply(
+          this instanceof bound ? this : that,
+          boundArgs.concat(slice.call(arguments)));
     }
 
-    F.length = isCallable ? Math.max(target.length - args.length, 0) : 0;
-    return F;
-  };
+    bound.prototype = Object.create(target.prototype);
+
+    // NOTICE: The function.length can not be changed.
+    //bound.length = Math.max(target.length - boundArgs.length, 0);
+
+    return bound;
+  });
 
 
   /*---------------------------------------*
@@ -70,11 +75,11 @@ define(function() {
   // ES5 15.2.3.5
   // http://stackoverflow.com/questions/3075308/what-modernizer-scripts-exist-for-the-new-ecmascript-5-functions
   // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/create
-  Object.create || (Object.create = function(proto) {
+  Object.create || (Object.create = function (proto) {
     if (proto === null) {
       throw new TypeError('null prototype is not supported');
     }
-    if (typeof proto !== 'object' || typeof proto !== 'function') {
+    if (typeof proto !== 'object' && typeof proto !== 'function') {
       throw new TypeError(proto + ' not an object or null');
     }
     if (arguments.length > 1) {
@@ -95,7 +100,6 @@ define(function() {
   // https://developer.mozilla.org/en/ECMAScript_DontEnum_attribute
   // http://msdn.microsoft.com/en-us/library/adebfyya(v=vs.94).aspx
   Object.keys || (Object.keys = (function () {
-    var hasOwnProperty = OP.hasOwnProperty;
     var hasDontEnumBug = !{toString:''}.propertyIsEnumerable('toString');
     var DontEnums = [
       'toString',
@@ -114,6 +118,7 @@ define(function() {
       }
 
       var result = [];
+
       for (var name in o) {
         if (hasOwnProperty.call(o, name)) {
           result.push(name);
@@ -122,8 +127,9 @@ define(function() {
 
       if (hasDontEnumBug) {
         for (var i = 0; i < DontEnumsLength; i++) {
-          if (hasOwnProperty.call(o, DontEnums[i]))
+          if (hasOwnProperty.call(o, DontEnums[i])) {
             result.push(DontEnums[i]);
+          }
         }
       }
 
@@ -132,5 +138,202 @@ define(function() {
     
   })());
 
+
+  /*---------------------------------------*
+   * Array
+   *---------------------------------------*/
+  // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array
+  // https://github.com/kangax/fabric.js/blob/gh-pages/src/util/lang_array.js
+
+
+  // ES5 15.4.3.2
+  // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/isArray
+  Array.isArray || (Array.isArray = function (obj) {
+    return OP.toString.call(obj) === '[object Array]';
+  });
+
+
+  // ES5 15.4.4.18
+  // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/array/foreach
+  AP.forEach || (AP.forEach = function (fn, context) {
+    for (var i = 0, len = this.length >>> 0; i < len; i++) {
+      if (i in this) {
+        fn.call(context, this[i], i, this);
+      }
+    }
+  });
+
+
+  // ES5 15.4.4.19
+  // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/map
+  AP.map || (AP.map = function map(fn, context) {
+    var result = [];
+    for (var i = 0, len = this.length >>> 0; i < len; i++) {
+      if (i in this) {
+        result[i] = fn.call(context, this[i], i, this);
+      }
+    }
+    return result;
+  });
+
+
+  // ES5 15.4.4.20
+  // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/filter
+  AP.filter || (AP.filter = function filter(fn, context) {
+    var result = [], val;
+    for (var i = 0, len = this.length >>> 0; i < len; i++) {
+      if (i in this) {
+        val = this[i]; // in case fn mutates this
+        if (fn.call(context, val, i, this)) {
+          result.push(val);
+        }
+      }
+    }
+    return result;
+  });
+
+
+  // ES5 15.4.4.16
+  // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/every
+  AP.every || (AP.every = function(fn, context) {
+    for (var i = 0, len = this.length >>> 0; i < len; i++) {
+      if (i in this && !fn.call(context, this[i], i, this)) {
+        return false;
+      }
+    }
+    return true;
+  });
+
+
+  // ES5 15.4.4.17
+  // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/some
+  AP.some || (AP.some = function(fn, context) {
+    for (var i = 0, len = this.length >>> 0; i < len; i++) {
+      if (i in this && fn.call(context, this[i], i, this)) {
+        return true;
+      }
+    }
+    return false;
+  });
+
+
+  // ES5 15.4.4.21
+  // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/reduce
+  AP.reduce || (AP.reduce = function(fn /*, initial*/) {
+    if(typeof fn !== 'function') {
+      throw new TypeError(fn + ' is not an function');
+    }
+
+    var len = this.length >>> 0, i = 0, result;
+
+    if (arguments.length > 1) {
+      result = arguments[1];
+    }
+    else {
+      do {
+        if (i in this) {
+          result = this[i++];
+          break;
+        }
+        // if array contains no values, no initial value to return
+        if (++i >= len) {
+          throw new TypeError('reduce of empty array with on initial value');
+        }
+      }
+      while (true);
+    }
+
+    for (; i < len; i++) {
+      if (i in this) {
+        result = fn.call(null, result, this[i], i, this);
+      }
+    }
+
+    return result;
+  });
+
+
+  // ES5 15.4.4.22
+  // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/reduceRight
+  AP.reduceRight || (AP.reduceRight = function reduceRight(fn /*, initial*/) {
+    if(typeof fn !== 'function') {
+      throw new TypeError(fn + ' is not an function');
+    }
+    
+    var len = this.length >>> 0, i = len - 1, result;
+
+    if (arguments.length > 1) {
+      result = arguments[1];
+    }
+    else {
+      do {
+        if (i in this) {
+          result = this[i--];
+          break;
+        }
+        // if array contains no values, no initial value to return
+        if (--i < 0)
+          throw new TypeError('reduce of empty array with on initial value');
+      }
+      while (true);
+    }
+
+    for (; i >= 0; i--) {
+      if (i in this) {
+        result = fn.call(null, result, this[i], i, this);
+      }
+    }
+
+    return result;
+  });
+
+  
+  // ES5 15.4.4.14
+  // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/indexOf
+  AP.indexOf || (AP.indexOf = function(value, from) {
+    var len = this.length >>> 0;
+
+    from = Number(from) || 0;
+    from = Math[from < 0 ? 'ceil' : 'floor'](from);
+    if (from < 0) {
+      from += len;
+    }
+
+    for (; from < len; from++) {
+      if (from in this && this[from] === value) {
+        return from;
+      }
+    }
+
+    return -1;
+  });
+
+
+  // ES5 15.4.4.15
+  // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/indexOf
+  AP.lastIndexOf || (AP.lastIndexOf = function(value, from) {
+    var len = this.length >>> 0;
+
+    from = Number(from) || len - 1;
+    from = Math[from < 0 ? 'ceil' : 'floor'](from);
+    if (from < 0) {
+      from += len;
+    }
+
+    for (; from >= 0; from--) {
+      if (from in this && this[from] === value) {
+        return from;
+      }
+    }
+
+    return -1;
+  });
+
+
+  /*---------------------------------------*
+   * String
+   *---------------------------------------*/
+
+  
 
 });

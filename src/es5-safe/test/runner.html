@@ -14,7 +14,7 @@
 
   if (location.search.indexOf('native') === -1) {
     if (typeof console !== 'undefined') {
-      console.warn('es5-safe is turned on.');
+      console.log('es5-safe is turned on.');
     }
 
 
@@ -32,7 +32,12 @@
     Array.prototype.every = null;
     Array.prototype.some = null;
 
-    
+    Array.prototype.reduce = null;
+    Array.prototype.reduceRight = null;
+
+    Array.prototype.indexOf = null;
+    Array.prototype.lastIndexOf = null;
+
 
     IS_NATIVE = false;
   }
@@ -42,7 +47,10 @@
 
 <script src="function-bind-spec.js"></script>
 <script src="object-spec.js"></script>
-<script src="array-spec.js"></script>
+<script src="array-isarray-spec.js"></script>
+<script src="array-iteration-spec.js"></script>
+<script src="array-reduce-spec.js"></script>
+<script src="array-indexing-spec.js"></script>
 
 </head>
 <body>

@@ -217,135 +217,123 @@
   });
 
 
-// ES5 15.4.4.21
-// https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/reduce
-  if (!Array.prototype.reduce) {
-    Array.prototype.reduce = function reduce(fun /*, initial*/) {
-      var len = +this.length;
-      // Whether to include (... || fun instanceof RegExp)
-      // in the following expression to trap cases where
-      // the provided function was actually a regular
-      // expression literal, which in V8 and
-      // JavaScriptCore is a typeof "function".  Only in
-      // V8 are regular expression literals permitted as
-      // reduce parameters, so it is desirable in the
-      // general case for the shim to match the more
-      // strict and common behavior of rejecting regular
-      // expressions.  However, the only case where the
-      // shim is applied is IE's Trident (and perhaps very
-      // old revisions of other engines).  In Trident,
-      // regular expressions are a typeof "object", so the
-      // following guard alone is sufficient.
-      if (typeof fun !== "function")
-        throw new TypeError();
+  // ES5 15.4.4.21
+  // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/reduce
+  AP.reduce || (AP.reduce = function(fn /*, initial*/) {
+    if(typeof fn !== 'function') {
+      throw new TypeError(fn + ' is not an function');
+    }
 
-      // no value to return if no initial value and an empty array
-      if (len === 0 && arguments.length === 1)
-        throw new TypeError();
+    var len = this.length >>> 0, i = 0, result;
 
-      var i = 0;
-      if (arguments.length >= 2) {
-        var rv = arguments[1];
-      } else {
-        do {
-          if (i in this) {
-            rv = this[i++];
-            break;
-          }
-
-          // if array contains no values, no initial value to return
-          if (++i >= len)
-            throw new TypeError();
-        } while (true);
+    if (arguments.length > 1) {
+      result = arguments[1];
+    }
+    else {
+      do {
+        if (i in this) {
+          result = this[i++];
+          break;
+        }
+        // if array contains no values, no initial value to return
+        if (++i >= len) {
+          throw new TypeError('reduce of empty array with on initial value');
+        }
       }
+      while (true);
+    }
 
-      for (; i < len; i++) {
-        if (i in this)
-          rv = fun.call(null, rv, this[i], i, this);
+    for (; i < len; i++) {
+      if (i in this) {
+        result = fn.call(null, result, this[i], i, this);
       }
+    }
 
-      return rv;
-    };
-  }
+    return result;
+  });
 
 
-// ES5 15.4.4.22
-// https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/reduceRight
-  if (!Array.prototype.reduceRight) {
-    Array.prototype.reduceRight = function reduceRight(fun /*, initial*/) {
-      var len = +this.length;
-      if (typeof fun !== "function")
-        throw new TypeError();
+  // ES5 15.4.4.22
+  // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/reduceRight
+  AP.reduceRight || (AP.reduceRight = function reduceRight(fn /*, initial*/) {
+    if(typeof fn !== 'function') {
+      throw new TypeError(fn + ' is not an function');
+    }
+    
+    var len = this.length >>> 0, i = len - 1, result;
 
-      // no value to return if no initial value, empty array
-      if (len === 0 && arguments.length === 1)
-        throw new TypeError();
-
-      var rv, i = len - 1;
-      if (arguments.length >= 2) {
-        rv = arguments[1];
-      } else {
-        do {
-          if (i in this) {
-            rv = this[i--];
-            break;
-          }
-
-          // if array contains no values, no initial value to return
-          if (--i < 0)
-            throw new TypeError();
-        } while (true);
+    if (arguments.length > 1) {
+      result = arguments[1];
+    }
+    else {
+      do {
+        if (i in this) {
+          result = this[i--];
+          break;
+        }
+        // if array contains no values, no initial value to return
+        if (--i < 0)
+          throw new TypeError('reduce of empty array with on initial value');
       }
+      while (true);
+    }
 
-      for (; i >= 0; i--) {
-        if (i in this)
-          rv = fun.call(null, rv, this[i], i, this);
+    for (; i >= 0; i--) {
+      if (i in this) {
+        result = fn.call(null, result, this[i], i, this);
       }
+    }
 
-      return rv;
-    };
-  }
+    return result;
+  });
 
-// ES5 15.4.4.14
-  if (!Array.prototype.indexOf) {
-    Array.prototype.indexOf = function indexOf(value /*, fromIndex */) {
-      var length = this.length;
-      if (!length)
-        return -1;
-      var i = arguments[1] || 0;
-      if (i >= length)
-        return -1;
-      if (i < 0)
-        i += length;
-      for (; i < length; i++) {
-        if (!(i in this))
-          continue;
-        if (value === this[i])
-          return i;
+  
+  // ES5 15.4.4.14
+  // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/indexOf
+  AP.indexOf || (AP.indexOf = function(value, from) {
+    var len = this.length >>> 0;
+
+    from = Number(from) || 0;
+    from = Math[from < 0 ? 'ceil' : 'floor'](from);
+    if (from < 0) {
+      from += len;
+    }
+
+    for (; from < len; from++) {
+      if (from in this && this[from] === value) {
+        return from;
       }
-      return -1;
-    };
-  }
+    }
 
-// ES5 15.4.4.15
-  if (!Array.prototype.lastIndexOf) {
-    Array.prototype.lastIndexOf = function lastIndexOf(value /*, fromIndex */) {
-      var length = this.length;
-      if (!length)
-        return -1;
-      var i = arguments[1] || length;
-      if (i < 0)
-        i += length;
-      i = Math.min(i, length - 1);
-      for (; i >= 0; i--) {
-        if (!(i in this))
-          continue;
-        if (value === this[i])
-          return i;
+    return -1;
+  });
+
+
+  // ES5 15.4.4.15
+  // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/indexOf
+  AP.lastIndexOf || (AP.lastIndexOf = function(value, from) {
+    var len = this.length >>> 0;
+
+    from = Number(from) || len - 1;
+    from = Math[from < 0 ? 'ceil' : 'floor'](from);
+    if (from < 0) {
+      from += len;
+    }
+
+    for (; from >= 0; from--) {
+      if (from in this && this[from] === value) {
+        return from;
       }
-      return -1;
-    };
-  }
+    }
 
+    return -1;
+  });
+
+
+  /*---------------------------------------*
+   * String
+   *---------------------------------------*/
+
+  
 
 });
