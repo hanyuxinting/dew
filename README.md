@@ -1,2 +1,2 @@
 
-The tiny drops in sea.
+Drops in the sea.
