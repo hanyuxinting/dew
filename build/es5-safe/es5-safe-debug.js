@@ -295,7 +295,7 @@
     from = Number(from) || 0;
     from = Math[from < 0 ? 'ceil' : 'floor'](from);
     if (from < 0) {
-      from += len;
+      from = Math.max(from + len, 0);
     }
 
     for (; from < len; from++) {
@@ -318,6 +318,7 @@
     if (from < 0) {
       from += len;
     }
+    from = Math.min(from, len - 1);
 
     for (; from >= 0; from--) {
       if (from in this && this[from] === value) {

@@ -99,6 +99,7 @@
 
     });
 
+
     it('Test Array.prototype.lastIndexOf', function() {
 
       // Negative cases.
@@ -168,6 +169,14 @@
       assertEquals(-1, Array.prototype.lastIndexOf.call(funky_object, 37));
 
       assertEquals(-1, Array.prototype.lastIndexOf.call(infinite_object, 42));
+
+    });
+
+
+    it('Test edge cases', function() {
+
+      assertEquals(2, ['a', 'b', 'c'].indexOf('c', -1e9));
+      assertEquals(2, ['a', 'b', 'c'].lastIndexOf('c', 1e9));
 
     });
 
