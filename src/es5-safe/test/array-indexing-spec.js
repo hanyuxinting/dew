@@ -30,6 +30,8 @@
     var funky_object = { 10:42, 100000: 42, 100001: 37, length: 50000 };
     var infinite_object = { 10: 42, 100000: 37, length: Infinity };
 
+    var isSupportUndefinedAsValue = 0 in [undefined];
+
 
     it('Test Array.prototype.indexOf', function() {
 
@@ -49,16 +51,18 @@
       assertEquals(6, array.indexOf(1, 4));
 
       // Find undefined, not holes.
-      assertEquals(3, undef_array.indexOf(undefined));
-      assertEquals(3, undef_array.indexOf(undefined, 3));
-      assertEquals(7, undef_array.indexOf(undefined, 4));
-      assertEquals(7, undef_array.indexOf(undefined, 7));
-      assertEquals(-1, undef_array.indexOf(undefined, 8));
-      assertEquals(3, undef_array.indexOf(undefined, -11));
-      assertEquals(3, undef_array.indexOf(undefined, -8));
-      assertEquals(7, undef_array.indexOf(undefined, -7));
-      assertEquals(7, undef_array.indexOf(undefined, -4));
-      assertEquals(-1, undef_array.indexOf(undefined, -3));
+      if (isSupportUndefinedAsValue) {
+        assertEquals(3, undef_array.indexOf(undefined));
+        assertEquals(3, undef_array.indexOf(undefined, 3));
+        assertEquals(7, undef_array.indexOf(undefined, 4));
+        assertEquals(7, undef_array.indexOf(undefined, 7));
+        assertEquals(-1, undef_array.indexOf(undefined, 8));
+        assertEquals(3, undef_array.indexOf(undefined, -11));
+        assertEquals(3, undef_array.indexOf(undefined, -8));
+        assertEquals(7, undef_array.indexOf(undefined, -7));
+        assertEquals(7, undef_array.indexOf(undefined, -4));
+        assertEquals(-1, undef_array.indexOf(undefined, -3));
+      }
 
       // Find in sparse array.
       assertEquals(100, sparse_array.indexOf(3));
@@ -81,6 +85,7 @@
       assertEquals(200, sparse_array.indexOf(undefined, -42000));
       assertEquals(800, sparse_array.indexOf(undefined, 201 - 42000));
       assertEquals(-1, sparse_array.indexOf(undefined, 801 - 42000));
+
 
       // Find in non-arrays.
       assertEquals(0, Array.prototype.indexOf.call(dense_object, 42));
@@ -117,16 +122,18 @@
       assertEquals(0, array.lastIndexOf(1, -11));
 
       // Find undefined, not holes.
-      assertEquals(7, undef_array.lastIndexOf(undefined));
-      assertEquals(-1, undef_array.lastIndexOf(undefined, 2));
-      assertEquals(3, undef_array.lastIndexOf(undefined, 3));
-      assertEquals(3, undef_array.lastIndexOf(undefined, 6));
-      assertEquals(7, undef_array.lastIndexOf(undefined, 7));
-      assertEquals(7, undef_array.lastIndexOf(undefined, -1));
-      assertEquals(-1, undef_array.lastIndexOf(undefined, -9));
-      assertEquals(3, undef_array.lastIndexOf(undefined, -8));
-      assertEquals(3, undef_array.lastIndexOf(undefined, -5));
-      assertEquals(7, undef_array.lastIndexOf(undefined, -4));
+      if (isSupportUndefinedAsValue) {
+        assertEquals(7, undef_array.lastIndexOf(undefined));
+        assertEquals(-1, undef_array.lastIndexOf(undefined, 2));
+        assertEquals(3, undef_array.lastIndexOf(undefined, 3));
+        assertEquals(3, undef_array.lastIndexOf(undefined, 6));
+        assertEquals(7, undef_array.lastIndexOf(undefined, 7));
+        assertEquals(7, undef_array.lastIndexOf(undefined, -1));
+        assertEquals(-1, undef_array.lastIndexOf(undefined, -9));
+        assertEquals(3, undef_array.lastIndexOf(undefined, -8));
+        assertEquals(3, undef_array.lastIndexOf(undefined, -5));
+        assertEquals(7, undef_array.lastIndexOf(undefined, -4));
+      }
 
       // Find in sparse array.
       assertEquals(900, sparse_array.lastIndexOf(3));

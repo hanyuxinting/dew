@@ -21,10 +21,12 @@
       {s : '\u0009', t : 'HORIZONTAL TAB'},
       {s : '\u000A', t : 'LINE FEED OR NEW LINE'},
       {s : '\u000B', t : 'VERTICAL TAB'},
-      {s : '\u000C', t : 'FORMFEED'},
+      {s : '\u000C', t : 'FORM FEED'},
       {s : '\u000D', t : 'CARRIAGE RETURN'},
       {s : '\u0020', t : 'SPACE'},
       {s : '\u00A0', t : 'NO-BREAK SPACE'},
+      {s : '\u1680', t : 'OGHAM SPACE MARK'},
+      {s : '\u180E', t : 'MONGOLIAN VOWEL SEPARATOR'},
       {s : '\u2000', t : 'EN QUAD'},
       {s : '\u2001', t : 'EM QUAD'},
       {s : '\u2002', t : 'EN SPACE'},
@@ -36,13 +38,15 @@
       {s : '\u2008', t : 'PUNCTUATION SPACE'},
       {s : '\u2009', t : 'THIN SPACE'},
       {s : '\u200A', t : 'HAIR SPACE'},
-      {s : '\u3000', t : 'IDEOGRAPHIC SPACE'},
+      {s : '\u200B', t : 'ZERO WIDTH SPACE (category Cf)'},
       {s : '\u2028', t : 'LINE SEPARATOR'},
       {s : '\u2029', t : 'PARAGRAPH SEPARATOR'},
-      {s : '\u200B', t : 'ZERO WIDTH SPACE (category Cf)'}
+      {s : '\u202F', t : 'NARROW NO-BREAK SPACE'},
+      {s : '\u205F', t : 'MEDIUM MATHEMATICAL SPACE'},
+      {s : '\u3000', t : 'IDEOGRAPHIC SPACE'}
     ];
 
-    
+
     it('Test String.prototype.trim', function() {
 
       for (var i = 0; i < whitespace.length; i++) {

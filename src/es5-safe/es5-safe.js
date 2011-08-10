@@ -338,9 +338,53 @@
   // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String/trim
   // http://blog.stevenlevithan.com/archives/faster-trim-javascript
   // http://jsperf.com/mega-trim-test
-  SP.trim || (SP.trim = function () {
-    return String(this).replace(/^[\s\u200B]+/, '').replace(/[\s\u200B]+$/, '');
-  });
+  SP.trim || (SP.trim = (function () {
+
+    // http://perfectionkills.com/whitespace-deviations/
+    var whiteSpaces = [
+
+      '\\s',
+      //'0009', // 'HORIZONTAL TAB'
+      //'000A', // 'LINE FEED OR NEW LINE'
+      //'000B', // 'VERTICAL TAB'
+      //'000C', // 'FORM FEED'
+      //'000D', // 'CARRIAGE RETURN'
+      //'0020', // 'SPACE'
+
+      '00A0', // 'NO-BREAK SPACE'
+      '1680', // 'OGHAM SPACE MARK'
+      '180E', // 'MONGOLIAN VOWEL SEPARATOR'
+
+      '2000-\\u200A',
+      //'2000', // 'EN QUAD'
+      //'2001', // 'EM QUAD'
+      //'2002', // 'EN SPACE'
+      //'2003', // 'EM SPACE'
+      //'2004', // 'THREE-PER-EM SPACE'
+      //'2005', // 'FOUR-PER-EM SPACE'
+      //'2006', // 'SIX-PER-EM SPACE'
+      //'2007', // 'FIGURE SPACE'
+      //'2008', // 'PUNCTUATION SPACE'
+      //'2009', // 'THIN SPACE'
+      //'200A', // 'HAIR SPACE'
+
+      '200B', // 'ZERO WIDTH SPACE (category Cf)
+      '2028', // 'LINE SEPARATOR'
+      '2029', // 'PARAGRAPH SEPARATOR'
+      '202F', // 'NARROW NO-BREAK SPACE'
+      '205F', // 'MEDIUM MATHEMATICAL SPACE'
+      '3000' //  'IDEOGRAPHIC SPACE'
+
+    ].join('\\u');
+
+    var trimLeftReg = new RegExp('^[' + whiteSpaces + ']+');
+    var trimRightReg = new RegExp('[' + whiteSpaces + ']+$');
+
+    return function() {
+      return String(this).replace(trimLeftReg, '').replace(trimRightReg, '');
+    }
+
+  })());
 
 
   /*---------------------------------------*

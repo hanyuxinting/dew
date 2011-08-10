@@ -367,29 +367,37 @@
       
     });
 
+
     it('Test edge cases.', function() {
 
       // undefined is an element
       var undefArray = [,,undefined,,undefined];
+      var isSupportUndefinedAsValue = 0 in [undefined];
 
-      testReduce("reduce", "SparseUndefinedReduceAdd", NaN,
-           [[0, undefined, 2, undefArray, NaN],
-            [NaN, undefined, 4, undefArray, NaN]
-           ],
-           undefArray, sum, 0);
+      if (isSupportUndefinedAsValue) {
+        testReduce("reduce", "SparseUndefinedReduceAdd", NaN,
+            [
+              [0, undefined, 2, undefArray, NaN],
+              [NaN, undefined, 4, undefArray, NaN]
+            ],
+            undefArray, sum, 0);
 
-      testReduce("reduceRight", "SparseUndefinedReduceRightAdd", NaN,
-           [[0, undefined, 4, undefArray, NaN],
-            [NaN, undefined, 2, undefArray, NaN]
-           ], undefArray, sum, 0);
+        testReduce("reduceRight", "SparseUndefinedReduceRightAdd", NaN,
+            [
+              [0, undefined, 4, undefArray, NaN],
+              [NaN, undefined, 2, undefArray, NaN]
+            ], undefArray, sum, 0);
 
-      testReduce("reduce", "SparseUndefinedReduceAddNoInit", NaN,
-           [[undefined, undefined, 4, undefArray, NaN]
-           ], undefArray, sum);
+        testReduce("reduce", "SparseUndefinedReduceAddNoInit", NaN,
+            [
+              [undefined, undefined, 4, undefArray, NaN]
+            ], undefArray, sum);
 
-      testReduce("reduceRight", "SparseUndefinedReduceRightAddNoInit", NaN,
-           [[undefined, undefined, 2, undefArray, NaN]
-           ], undefArray, sum);
+        testReduce("reduceRight", "SparseUndefinedReduceRightAddNoInit", NaN,
+            [
+              [undefined, undefined, 2, undefArray, NaN]
+            ], undefArray, sum);
+      }
 
 
       // Ignore non-array properties:
