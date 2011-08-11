@@ -50,7 +50,7 @@
         Cookie.set('_sea_test_11', 'xx');
         expect(Cookie.get('_sea_test_11')).toBe('xx');
 
-        Cookie.set('_sea_test_12', 'xx', { expires: 0 });
+        Cookie.set('_sea_test_12', 'xx', { expires: -1 });
         expect(Cookie.get('_sea_test_12')).toBeUndefined();
 
         Cookie.set('_sea_test_13', '2', {

@@ -45,14 +45,14 @@
   exports.get = function(name, options) {
     validateCookieName(name);
 
-    if (isFunction(options)) {
+    if (typeof options === 'function') {
       options = { converter: options };
     }
-    else if (!isObject(options)) {
-      options = {};
+    else {
+      options = options || {};
     }
 
-    var decode = options['raw'] ? nop : decodeURIComponent;
+    var decode = (1 || options['raw']) ? nop : decodeURIComponent;
     var converter = options.converter || nop;
 
     var ret, m, text = document.cookie;
@@ -145,20 +145,8 @@
 
 
   // Helpers
-  function isType(o, s) {
-    return Object.prototype.toString.call(o) === '[object ' + s + ']';
-  }
-
   function isString(o) {
-    return isType(o, 'String');
-  }
-
-  function isObject(o) {
-    return isType(o, 'Object');
-  }
-
-  function isFunction(o) {
-    return isType(o, 'Function');
+    return typeof o === 'string';
   }
 
   function isNonEmptyString(s) {
