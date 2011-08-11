@@ -11,14 +11,16 @@ Optionally override the default separator and assignment characters.
 
 Example:
 
-    QueryString.stringify({foo: 'bar'})
-    // returns 'foo=bar'
+````javascript
+QueryString.stringify({foo: 'bar'})
+// returns 'foo=bar'
 
-    QueryString.stringify({foo: 'bar', baz: 'john', baz: 'bob'}, ';', ':')
-    // returns 'foo:bar;baz:john;baz:john'
+QueryString.stringify({foo: 'bar', baz: 'john', baz: 'bob'}, ';', ':')
+// returns 'foo:bar;baz:john;baz:john'
 
-    QueryString.stringify({bar: 'john', bar: 'bob'}, null, null, true)
-    // returns 'bar%5B%5D=john&bar%5B%5D=bob'
+QueryString.stringify({bar: 'john', bar: 'bob'}, null, null, true)
+// returns 'bar%5B%5D=john&bar%5B%5D=bob'
+````
 
 
 ### QueryString.parse(str, sep='&', eq='=')
@@ -28,8 +30,10 @@ Optionally override the default separator and assignment characters.
 
 Example:
 
-    QueryString.parse('a=b&b=c')
-    // returns { a: 'b', b: 'c' }
+````javascript
+QueryString.parse('a=b&b=c')
+// returns { a: 'b', b: 'c' }
+````
 
 
 ### QueryString.escape

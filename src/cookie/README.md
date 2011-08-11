@@ -13,7 +13,8 @@ Example:
 
 ````javascript
 // setup
-document.cookie = 'foo=1&bar=2';
+document.cookie = 'foo=1';
+document.cookie = 'bar=2';
 
 Cookie.get('foo');
 // returns '1'

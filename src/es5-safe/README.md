@@ -5,21 +5,23 @@ behave as closely as possible to ES5.
 
 It provides the following methods:
 
-    Function.prototype.bind
-    Object.create
-    Object.keys
-    Array.isArray
-    Array.prototype.forEach
-    Array.prototype.map
-    Array.prototype.filter
-    Array.prototype.every
-    Array.prototype.some
-    Array.prototype.reduce
-    Array.prototype.reduceRight
-    Array.prototype.indexOf
-    Array.prototype.lastIndexOf
-    String.prototype.trim
-    Date.now
+````
+Function.prototype.bind
+Object.create
+Object.keys
+Array.isArray
+Array.prototype.forEach
+Array.prototype.map
+Array.prototype.filter
+Array.prototype.every
+Array.prototype.some
+Array.prototype.reduce
+Array.prototype.reduceRight
+Array.prototype.indexOf
+Array.prototype.lastIndexOf
+String.prototype.trim
+Date.now
+````
 
 Please refer to [MDN](https://developer.mozilla.org/En/JavaScript/ECMAScript_5_support_in_Mozilla) for detail usages.
 
