@@ -193,6 +193,29 @@
 
     });
 
+    it('Test issue #18', function() {
+
+      // https://github.com/lifesinger/lifesinger.github.com/issues/65
+      function Foo(name) {
+        return [this.name = name, 1, 2, 3];
+      }
+      assertEquals(['instance', 1, 2, 3], new Foo('instance'));
+
+      var F = Foo.bind({ 'name': 'bound' });
+      assertEquals(['other', 1, 2, 3], new F('other'));
+
+
+      function bar(a, b, c) {
+        assertEquals(['a', 'b', 'c', 'd', 'e', 'f'], [].slice.call(arguments));
+        assertEquals('bound', this.name);
+      }
+
+      var b = bar.bind({ 'name': 'bound' }, 'a', 'b', 'c');
+      b.call({ 'name': 'ignored' }, 'd', 'e', 'f');
+      b.apply({ 'name': 'ignored' }, ['d', 'e', 'f']);
+
+    });
+
   });
 
 })();

@@ -123,6 +123,8 @@
         return 2 * n;
       });
       assertEquals(4, a[15]);
+      assertEquals(20, a.length); // the length should equal to the original.
+
     });
 
     it('Test Array.prototype.filter', function() {

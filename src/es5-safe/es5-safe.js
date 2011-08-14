@@ -1,5 +1,5 @@
 /**
- * @license The safe part of es5-shim v0.9.0
+ * @license The safe part of es5-shim v0.9.1
  * https://github.com/seajs/dew/tree/master/src/es5-safe
  */
 
@@ -166,12 +166,15 @@
   // ES5 15.4.4.19
   // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/map
   AP.map || (AP.map = function (fn, context) {
-    var result = [];
-    for (var i = 0, len = this.length >>> 0; i < len; i++) {
+    var len = this.length >>> 0;
+    var result = new Array(len);
+
+    for (var i = 0; i < len; i++) {
       if (i in this) {
         result[i] = fn.call(context, this[i], i, this);
       }
     }
+
     return result;
   });
 
@@ -180,6 +183,7 @@
   // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/filter
   AP.filter || (AP.filter = function (fn, context) {
     var result = [], val;
+
     for (var i = 0, len = this.length >>> 0; i < len; i++) {
       if (i in this) {
         val = this[i]; // in case fn mutates this
@@ -188,6 +192,7 @@
         }
       }
     }
+
     return result;
   });
 
@@ -394,7 +399,7 @@
   // ES5 15.9.4.4
   // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Date/now
   Date.now || (Date.now = function () {
-    return new Date().getTime();
+    return +new Date;
   });
   
 });
