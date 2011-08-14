@@ -6,14 +6,6 @@
     expect(actual).toEqual(expected);
   }
 
-  function assertTrue(actual) {
-    assertEquals(true, actual);
-  }
-
-//  function assertFalse(actual) {
-//    assertEquals(false, actual);
-//  }
-
 
   // http://code.google.com/p/v8/source/browse/trunk/test/mjsunit/function-bind.js
   describe('Function.prototype.bind', function() {
@@ -174,8 +166,8 @@
       assertEquals(3, obj2.z);
 
       // Test instanceof obj2 is bar, not f.
-      assertTrue(obj2 instanceof bar);
-      //assertFalse(obj2 instanceof f);
+      assertEquals(true, obj2 instanceof bar);
+      assertEquals(false, obj2 instanceof f); // NOTICE: fail
 
     });
 
@@ -194,8 +186,9 @@
     });
 
     it('Test issue #18', function() {
-
       // https://github.com/seajs/dew/issues/18
+
+      // case 1
       function Foo(name) {
         return [this.name = name, 1, 2, 3];
       }
@@ -205,6 +198,7 @@
       assertEquals(['other', 1, 2, 3], new F('other'));
 
 
+      // case 2
       function bar(a, b, c) {
         assertEquals(['a', 'b', 'c', 'd', 'e', 'f'], [].slice.call(arguments));
         assertEquals('bound', this.name);
@@ -213,6 +207,16 @@
       var b = bar.bind({ 'name': 'bound' }, 'a', 'b', 'c');
       b.call({ 'name': 'ignored' }, 'd', 'e', 'f');
       b.apply({ 'name': 'ignored' }, ['d', 'e', 'f']);
+
+
+      // case 3
+      function Foo2() {
+        return this;
+      }
+      Foo2.prototype.name = 'default';
+      
+      var F2 = Foo2.bind({ 'name': 'bound' });
+      assertEquals('bound', F2.call(new F2).name); // NOTICE: fail
 
     });
 
