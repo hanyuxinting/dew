@@ -17,7 +17,7 @@
 
 
   // http://code.google.com/p/v8/source/browse/trunk/test/mjsunit/object-create.js
-  describe('Object.create', function() {
+  xdescribe('Object.create', function() {
 
     it('Test arguments.', function() {
 

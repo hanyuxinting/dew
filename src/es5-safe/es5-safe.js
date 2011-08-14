@@ -58,7 +58,16 @@
           boundArgs.concat(slice.call(arguments)));
     }
 
-    bound.prototype = Object.create(target.prototype);
+    if (Object.create) {
+      bound.prototype = Object.create(target.prototype);
+    }
+    else {
+      /** @constructor */
+      function F() {
+      }
+      F.prototype = target.prototype;
+      bound.prototype = new F();
+    }
 
     // NOTICE: The function.length can not be changed.
     //bound.length = Math.max(target.length - boundArgs.length, 0);
@@ -71,28 +80,6 @@
    * Object
    *---------------------------------------*/
   // http://ejohn.org/blog/ecmascript-5-objects-and-properties/
-
-  // ES5 15.2.3.5
-  // http://stackoverflow.com/questions/3075308/what-modernizer-scripts-exist-for-the-new-ecmascript-5-functions
-  // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/create
-  Object.create || (Object.create = function (proto) {
-    if (proto === null) {
-      throw new TypeError('null prototype is not supported');
-    }
-    if (typeof proto !== 'object' && typeof proto !== 'function') {
-      throw new TypeError(proto + ' not an object or null');
-    }
-    if (arguments.length > 1) {
-      throw Error('The second parameter is not supported');
-    }
-
-    /** @constructor */
-    function F() {
-    }
-    F.prototype = proto;
-    return new F();
-  });
-
 
   // ES5 15.2.3.14
   // http://whattheheadsaid.com/2010/10/a-safer-object-keys-compatibility-implementation

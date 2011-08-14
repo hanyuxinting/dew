@@ -7,7 +7,6 @@ It provides the following methods:
 
 ````javascript
 Function.prototype.bind
-Object.create
 Object.keys
 Array.isArray
 Array.prototype.forEach

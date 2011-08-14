@@ -195,7 +195,7 @@
 
     it('Test issue #18', function() {
 
-      // https://github.com/lifesinger/lifesinger.github.com/issues/65
+      // https://github.com/seajs/dew/issues/18
       function Foo(name) {
         return [this.name = name, 1, 2, 3];
       }
