@@ -53,27 +53,53 @@
     var boundArgs = slice.call(arguments, 1);
 
     function bound() {
-      return target.apply(
-          this instanceof bound ? this : that,
-          boundArgs.concat(slice.call(arguments)));
+      // Called as a constructor.
+      if (this instanceof bound) {
+        var self = createObject(target.prototype);
+        var result = target.apply(
+            self,
+            boundArgs.concat(slice.call(arguments))
+        );
+
+        if (result !== null && Object(result) === result) {
+          return result;
+        }
+        return self;
+      }
+      // Called as a function.
+      else {
+        return target.apply(
+            that,
+            boundArgs.concat(slice.call(arguments))
+        );
+      }
     }
 
+    // NOTICE: The function.length is not writable.
+    //bound.length = Math.max(target.length - boundArgs.length, 0);
+
+    return bound;
+  });
+
+
+  // Helpers
+  function createObject(proto) {
+    var o;
+
     if (Object.create) {
-      bound.prototype = Object.create(target.prototype);
+      o = Object.create(proto);
     }
     else {
       /** @constructor */
       function F() {
       }
-      F.prototype = target.prototype;
-      bound.prototype = new F();
+
+      F.prototype = proto;
+      o = new F();
     }
 
-    // NOTICE: The function.length can not be changed.
-    //bound.length = Math.max(target.length - boundArgs.length, 0);
-
-    return bound;
-  });
+    return o;
+  }
 
 
   /*---------------------------------------*
