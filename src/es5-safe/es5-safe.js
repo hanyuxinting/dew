@@ -60,11 +60,7 @@
             self,
             boundArgs.concat(slice.call(arguments))
         );
-
-        if (result !== null && Object(result) === result) {
-          return result;
-        }
-        return self;
+        return Object(result) === result ? result : self;
       }
       // Called as a function.
       else {

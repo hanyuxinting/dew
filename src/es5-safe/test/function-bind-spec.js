@@ -218,6 +218,27 @@
       var F2 = Foo2.bind({ 'name': 'bound' });
       assertEquals('bound', F2.call(new F2).name); // NOTICE: fail
 
+
+      // case: return custom object
+      function fn() {
+        return { p: 'fn' };
+      }
+
+      var bound = fn.bind({ p: 'bound' });
+      assertEquals('fn', new bound().p);
+
+
+      // case: chained binds
+      function f() { this.name = 'o'; }
+      var f2 = f.bind({});
+      var f3 = f2.bind({});
+      var o = new f3();
+
+      assertEquals(false, o instanceof f3);
+      assertEquals(false, o instanceof f2);
+      assertEquals(true, o instanceof f);
+      assertEquals('o', o.name);
+
     });
 
   });
