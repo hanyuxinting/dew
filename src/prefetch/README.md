@@ -8,13 +8,7 @@ http://www.phpied.com/preload-cssjavascript-without-execution/
 
 ### Usage
 
-You can use `prefetch` link in html:
-
-````
-<link rel="prefetch" href="http://path/to/your/file"/>
-````
-
-Or add resource via script:
+Add prefetch resources via script:
 
 ````javascript
 Prefetch.add('http://path/to/file');
@@ -34,10 +28,7 @@ This module can also be used as a CommonJS module:
 ````javascript
 define(function(require, exports) {
   var Prefetch = require('prefetch/0.9.0/prefetch');
-
-  Prefetch
-  .add(['file1.js', 'file2.css', 'file3.png'])
-  .start();
+  Prefetch.add(['file1.js', 'file2.css', 'file3.png']).start();
 });
 ````
 
