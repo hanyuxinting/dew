@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Test Runner</title>
+<script src="../prefetch.js"></script>
+</head>
+
+<body>
+
+<div id="out1js"></div>
+<div id="out2js"></div>
+<div id="out1css"></div>
+<div id="out2css"></div>
+
+<script>
+
+Prefetch
+    .add(['1.js', '2.js', '1.css', '2.css'])
+    .add('http://pic.yupoo.com/ucdcn_v/BiSp8bR7/wood.jpg')
+    .start();
+
+</script>
+
+<p>Please open Firebug or other develop tool to see the http request.</p>
+
+<p>Validator page: <a href="validator.html">validator.html</a></p>
+
+</body>
+</html>
