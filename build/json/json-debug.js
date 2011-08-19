@@ -171,7 +171,7 @@ var JSON;
 (function(factory) {
 
   if (typeof define === 'function') {
-    define([], factory);
+    define('json', [], factory);
   } else {
     factory();
   }
