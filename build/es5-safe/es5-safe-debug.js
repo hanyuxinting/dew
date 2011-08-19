@@ -21,7 +21,7 @@
 (function(factory) {
 
   if (typeof define === 'function') {
-    define('es5-safe', [], factory);
+    define([], factory);
   } else {
     factory();
   }

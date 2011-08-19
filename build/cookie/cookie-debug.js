@@ -16,7 +16,7 @@
 (function(factory) {
 
   if (typeof define === 'function') {
-    define('cookie', [], factory);
+    define([], factory);
   } else {
     factory(null, (this['Cookie'] = {}));
   }

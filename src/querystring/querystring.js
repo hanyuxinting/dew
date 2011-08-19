@@ -15,7 +15,7 @@
 (function(factory) {
 
   if (typeof define === 'function') {
-    define('querystring', [], factory);
+    define([], factory);
   } else {
     factory(null, (this.QueryString = {}));
   }

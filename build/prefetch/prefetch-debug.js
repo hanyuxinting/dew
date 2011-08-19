@@ -17,7 +17,7 @@
 (function(factory) {
 
   if (typeof define === 'function') {
-    define('prefetch', [], factory);
+    define([], factory);
   } else {
     factory(null, (this['Prefetch'] = {}));
   }
