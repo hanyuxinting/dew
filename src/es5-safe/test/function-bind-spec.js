@@ -167,7 +167,7 @@
 
       // Test instanceof obj2 is bar, not f.
       assertEquals(true, obj2 instanceof bar);
-      assertEquals(false, obj2 instanceof f); // NOTICE: fail
+      assertEquals(false, obj2 instanceof f);
 
     });
 
@@ -216,7 +216,7 @@
       Foo2.prototype.name = 'default';
       
       var F2 = Foo2.bind({ 'name': 'bound' });
-      assertEquals('bound', F2.call(new F2).name); // NOTICE: fail
+      assertEquals('bound', F2.call(new F2).name);
 
 
       // case: return custom object
