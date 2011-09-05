@@ -1,5 +1,5 @@
 /*
- Cookie v1.0.0
+ Cookie v1.0.1
  https://github.com/seajs/dew/tree/master/src/cookie
 */
 (function(g){typeof define==="function"?define([],g):g(null,this.Cookie={})})(function(g,d){function i(b){return typeof b==="string"}function m(b){if(!(i(b)&&b!==""))throw new TypeError("Cookie name must be a non-empty string");}function n(b){return b}d.version="1.0.1";var k=decodeURIComponent,o=encodeURIComponent;d.get=function(b,a){m(b);var a=typeof a==="function"?{converter:a}:a||{},c=document.cookie,l=!a.raw,f={};if(i(c)&&c.length>0)for(var l=l?k:n,c=c.split(/;\s/g),e,d,j,h=0,g=c.length;h<g;h++){j=

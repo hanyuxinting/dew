@@ -1,5 +1,5 @@
 /**
- * @license Cookie v1.0.0
+ * @license Cookie v1.0.1
  * https://github.com/seajs/dew/tree/master/src/cookie
  */
 
