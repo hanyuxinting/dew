@@ -23,7 +23,10 @@
 
 })(function(require, exports) {
 
-  exports.version = '1.0.0';
+  exports.version = '1.0.1';
+
+  var decode = decodeURIComponent;
+  var encode = encodeURIComponent;
 
 
   /**
@@ -52,16 +55,8 @@
       options = options || {};
     }
 
-    var decode = (1 || options['raw']) ? nop : decodeURIComponent;
-    var converter = options.converter || nop;
-
-    var ret, m, text = document.cookie;
-    if (isString(text) && (m =
-        text.match(new RegExp('(?:^| )' + name + '(?:(?:=([^;]*))|;|$)')))) {
-      ret = converter(m[1] ? decode(m[1]) : '');
-    }
-
-    return ret;
+    var cookies = parseCookieString(document.cookie, !options['raw']);
+    return (options.converter || nop)(cookies[name]);
   };
 
 
@@ -89,7 +84,7 @@
     var path = options['path'];
 
     if (!options['raw']) {
-      value = encodeURIComponent(String(value));
+      value = encode(String(value));
     }
 
     var text = name + '=' + value;
@@ -142,6 +137,45 @@
     options['expires'] = new Date(0);
     return this.set(name, '', options);
   };
+
+
+  function parseCookieString(text, shouldDecode) {
+    var cookies = {};
+
+    if (isString(text) && text.length > 0) {
+
+      var decodeValue = shouldDecode ? decode : nop;
+      var cookieParts = text.split(/;\s/g);
+      var cookieName;
+      var cookieValue;
+      var cookieNameValue;
+
+      for (var i = 0, len = cookieParts.length; i < len; i++) {
+
+        // check for normally-formatted cookie (name-value)
+        cookieNameValue = cookieParts[i].match(/([^=]+)=/i);
+        if (cookieNameValue instanceof Array) {
+          try {
+            cookieName = decode(cookieNameValue[1]);
+            cookieValue = decodeValue(cookieParts[i].substring(cookieNameValue[1].length + 1));
+          } catch (ex) {
+            // intentionally ignore the cookie - the encoding is wrong
+          }
+        } else {
+          // means the cookie does not have an "=", so treat it as a boolean flag
+          cookieName = decode(cookieParts[i]);
+          cookieValue = '';
+        }
+
+        if (cookieName) {
+          cookies[cookieName] = cookieValue;
+        }
+      }
+
+    }
+
+    return cookies;
+  }
 
 
   // Helpers

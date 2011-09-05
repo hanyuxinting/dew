@@ -14,12 +14,14 @@
       document.cookie = '_sea_test_1=1';
       document.cookie = '_sea_test_2';
       document.cookie = '_sea_test_3=';
+      document.cookie = '_sea_test_4[t]=xx';
 
       it('should return the cookie value for the given name.', function() {
 
         expect(Cookie.get('_sea_test_1')).toBe('1');
         expect(Cookie.get('_sea_test_2')).toBe('');
         expect(Cookie.get('_sea_test_3')).toBe('');
+        expect(Cookie.get('_sea_test_4[t]')).toBe('xx');
 
       });
 
