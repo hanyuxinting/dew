@@ -10,7 +10,6 @@
  * @see Thanks to:
  *   - http://www.nczonline.net/blog/2009/05/05/http-cookies-explained/
  *   - http://developer.yahoo.com/yui/3/cookie/
- *   - https://github.com/kissyteam/kissy/blob/master/src/cookie/
  */
 
 (function(factory) {
