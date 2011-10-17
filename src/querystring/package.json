@@ -1,0 +1,10 @@
+{
+  "name"          : "querystring",
+  "description"   : "Provides utilities for dealing with query strings.",
+  "url"           : "https://github.com/seajs/dew/tree/master/src/querystring",
+  "keywords"      : ["util"],
+  "author"        : "Frank Wang <lifesinger@gmail.com>",
+  "version"       : "1.0.0",
+  "src"           : "https://raw.github.com/seajs/dew/master/build/querystring/querystring-debug.js",
+  "min"           : "https://raw.github.com/seajs/dew/master/build/querystring/querystring.js"
+}
