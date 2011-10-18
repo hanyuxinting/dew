@@ -1,5 +1,5 @@
 {
-  "name"          : "Cookie",
+  "name"          : "cookie",
   "description"   : "Provides utilities for dealing with cookies.",
   "url"           : "https://github.com/seajs/dew/tree/master/src/cookie",
   "keywords"      : ["util"],
