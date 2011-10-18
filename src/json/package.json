@@ -1,5 +1,5 @@
 {
-  "name"          : "json",
+  "name"          : "JSON",
   "description"   : "JSON in JavaScript",
   "url"           : "https://github.com/seajs/dew/tree/master/src/json",
   "keywords"      : ["util"],

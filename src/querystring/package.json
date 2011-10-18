@@ -1,5 +1,5 @@
 {
-  "name"          : "querystring",
+  "name"          : "QueryString",
   "description"   : "Provides utilities for dealing with query strings.",
   "url"           : "https://github.com/seajs/dew/tree/master/src/querystring",
   "keywords"      : ["util"],
