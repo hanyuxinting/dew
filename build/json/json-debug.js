@@ -1,11 +1,18 @@
 /**
- * @license http://www.JSON.org/json2.js
+ * @preserve http://www.JSON.org/json2.js | 2011-10-19
  */
 
-/*
-    http://www.JSON.org/json2.js
-    2011-02-23
+(function () {
 
+  var JSON;
+
+  if (typeof exports !== 'undefined') {
+    JSON = exports;
+  } else {
+    JSON = this.JSON = {};
+  }
+
+/*
     Public Domain.
 
     NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
@@ -150,7 +157,7 @@
     redistribute.
 */
 
-/*jslint evil: true, strict: false, regexp: false */
+/*jslint evil: true, regexp: true */
 
 /*members "", "\b", "\t", "\n", "\f", "\r", "\"", JSON, "\\", apply,
     call, charCodeAt, getUTCDate, getUTCFullYear, getUTCHours,
@@ -163,25 +170,6 @@
 // Create a JSON object only if one does not already exist. We create the
 // methods in a closure to avoid creating global variables.
 
-var JSON;
-  if (!JSON) {
-    JSON = {};
-  }
-
-(function(factory) {
-
-  if (typeof define === 'function') {
-    define('json', [], factory);
-  } else {
-    factory();
-  }
-
-})(function(require, exports, module) {
-
-    if (module) module.exports = JSON;
-
-    //"use strict";
-
     function f(n) {
         // Format integers to have at least two digits.
         return n < 10 ? '0' + n : n;
@@ -191,13 +179,14 @@ var JSON;
 
         Date.prototype.toJSON = function (key) {
 
-            return isFinite(this.valueOf()) ?
-                this.getUTCFullYear()     + '-' +
-                f(this.getUTCMonth() + 1) + '-' +
-                f(this.getUTCDate())      + 'T' +
-                f(this.getUTCHours())     + ':' +
-                f(this.getUTCMinutes())   + ':' +
-                f(this.getUTCSeconds())   + 'Z' : '';
+            return isFinite(this.valueOf())
+                ? this.getUTCFullYear()     + '-' +
+                    f(this.getUTCMonth() + 1) + '-' +
+                    f(this.getUTCDate())      + 'T' +
+                    f(this.getUTCHours())     + ':' +
+                    f(this.getUTCMinutes())   + ':' +
+                    f(this.getUTCSeconds())   + 'Z'
+                : null;
         };
 
         String.prototype.toJSON      =
@@ -233,8 +222,9 @@ var JSON;
         escapable.lastIndex = 0;
         return escapable.test(string) ? '"' + string.replace(escapable, function (a) {
             var c = meta[a];
-            return typeof c === 'string' ? c :
-                '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+            return typeof c === 'string'
+                ? c
+                : '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
         }) + '"' : '"' + string + '"';
     }
 
@@ -318,9 +308,11 @@ var JSON;
 // Join all of the elements together, separated with commas, and wrap them in
 // brackets.
 
-                v = partial.length === 0 ? '[]' : gap ?
-                    '[\n' + gap + partial.join(',\n' + gap) + '\n' + mind + ']' :
-                    '[' + partial.join(',') + ']';
+                v = partial.length === 0
+                    ? '[]'
+                    : gap
+                    ? '[\n' + gap + partial.join(',\n' + gap) + '\n' + mind + ']'
+                    : '[' + partial.join(',') + ']';
                 gap = mind;
                 return v;
             }
@@ -355,9 +347,11 @@ var JSON;
 // Join all of the member texts together, separated with commas,
 // and wrap them in braces.
 
-            v = partial.length === 0 ? '{}' : gap ?
-                '{\n' + gap + partial.join(',\n' + gap) + '\n' + mind + '}' :
-                '{' + partial.join(',') + '}';
+            v = partial.length === 0
+                ? '{}'
+                : gap
+                ? '{\n' + gap + partial.join(',\n' + gap) + '\n' + mind + '}'
+                : '{' + partial.join(',') + '}';
             gap = mind;
             return v;
         }
@@ -483,8 +477,9 @@ var JSON;
 // In the optional fourth stage, we recursively walk the new structure, passing
 // each name/value pair to a reviver function for possible transformation.
 
-                return typeof reviver === 'function' ?
-                    walk({'': j}, '') : j;
+                return typeof reviver === 'function'
+                    ? walk({'': j}, '')
+                    : j;
             }
 
 // If the text is not JSON parseable, then a SyntaxError is thrown.
@@ -492,4 +487,4 @@ var JSON;
             throw new SyntaxError('JSON.parse');
         };
     }
-});
+}());

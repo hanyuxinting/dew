@@ -1,6 +1,5 @@
 /**
- * @license Cookie v1.0.1
- * https://github.com/seajs/dew/tree/master/src/cookie
+ * @preserve Cookie v1.0.2 | https://github.com/seajs/dew/tree/master/src/cookie | MIT Licensed
  */
 
 /**
@@ -12,17 +11,18 @@
  *   - http://developer.yahoo.com/yui/3/cookie/
  */
 
-(function(factory) {
+(function() {
 
-  if (typeof define === 'function') {
-    define('cookie', [], factory);
+  var Cookie;
+
+  if (typeof exports !== 'undefined') {
+    Cookie = exports;
   } else {
-    factory(null, (this['Cookie'] = {}));
+    Cookie = this.Cookie = {};
   }
 
-})(function(require, exports) {
 
-  exports.version = '1.0.1';
+  Cookie.version = '1.0.2';
 
   var decode = decodeURIComponent;
   var encode = encodeURIComponent;
@@ -44,7 +44,7 @@
    *     the cookie doesn't exist. If the converter is specified, returns the
    *     value returned from the converter.
    */
-  exports.get = function(name, options) {
+  Cookie.get = function(name, options) {
     validateCookieName(name);
 
     if (typeof options === 'function') {
@@ -55,7 +55,7 @@
     }
 
     var cookies = parseCookieString(document.cookie, !options['raw']);
-    return (options.converter || nop)(cookies[name]);
+    return (options.converter || same)(cookies[name]);
   };
 
 
@@ -74,7 +74,7 @@
    *
    * @return {string} The created cookie string.
    */
-  exports.set = function(name, value, options) {
+  Cookie.set = function(name, value, options) {
     validateCookieName(name);
 
     options = options || {};
@@ -131,7 +131,7 @@
    *
    * @return {string} The created cookie string.
    */
-  exports.remove = function(name, options) {
+  Cookie.remove = function(name, options) {
     options = options || {};
     options['expires'] = new Date(0);
     return this.set(name, '', options);
@@ -143,7 +143,7 @@
 
     if (isString(text) && text.length > 0) {
 
-      var decodeValue = shouldDecode ? decode : nop;
+      var decodeValue = shouldDecode ? decode : same;
       var cookieParts = text.split(/;\s/g);
       var cookieName;
       var cookieValue;
@@ -192,8 +192,8 @@
     }
   }
 
-  function nop(s) {
+  function same(s) {
     return s;
   }
 
-});
+})();
