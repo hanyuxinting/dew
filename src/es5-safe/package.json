@@ -4,7 +4,7 @@
   "url"           : "https://github.com/seajs/dew/tree/master/src/es5-safe",
   "keywords"      : ["util"],
   "author"        : "Frank Wang <lifesinger@gmail.com>",
-  "version"       : "0.9.1",
+  "version"       : "0.9.2",
   "src"           : "https://raw.github.com/seajs/dew/master/build/es5-safe/es5-safe-debug.js",
   "min"           : "https://raw.github.com/seajs/dew/master/build/es5-safe/es5-safe.js"
 }

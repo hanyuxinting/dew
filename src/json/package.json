@@ -4,7 +4,7 @@
   "url"           : "https://github.com/seajs/dew/tree/master/src/json",
   "keywords"      : ["util"],
   "author"        : "Frank Wang <lifesinger@gmail.com>",
-  "version"       : "1.0.0",
+  "version"       : "1.0.1",
   "src"           : "https://raw.github.com/seajs/dew/master/build/json/json-debug.js",
   "min"           : "https://raw.github.com/seajs/dew/master/build/json/json.js"
 }

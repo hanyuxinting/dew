@@ -1,6 +1,5 @@
 /**
- * @license The safe part of es5-shim v0.9.1
- * https://github.com/seajs/dew/tree/master/src/es5-safe
+ * @preserve The safe part of es5-shim v0.9.2 | https://github.com/seajs/dew/tree/master/src/es5-safe | MIT Licensed
  */
 
 /**
@@ -18,15 +17,7 @@
  *   - https://code.google.com/p/v8/
  */
 
-(function(factory) {
-
-  if (typeof define === 'function') {
-    define('es5-safe', [], factory);
-  } else {
-    factory();
-  }
-
-})(function() {
+(function() {
 
   var OP = Object.prototype;
   var AP = Array.prototype;
@@ -144,7 +135,7 @@
 
       return result;
     };
-    
+
   })());
 
 
@@ -272,7 +263,7 @@
     if(typeof fn !== 'function') {
       throw new TypeError(fn + ' is not an function');
     }
-    
+
     var len = this.length >>> 0, i = len - 1, result;
 
     if (arguments.length > 1) {
@@ -300,7 +291,7 @@
     return result;
   });
 
-  
+
   // ES5 15.4.4.14
   // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/indexOf
   AP.indexOf || (AP.indexOf = function (value, from) {
@@ -410,5 +401,5 @@
   Date.now || (Date.now = function () {
     return +new Date;
   });
-  
-});
+
+})();
