@@ -1,4 +1,5 @@
 #/bin/bash
+#usage: ./compress.sh name
 
 echo compress $1...
 
@@ -13,7 +14,7 @@ fi
 cp $IN build/$1/$1-debug.js
 
 SIZE_SRC=$(cat $IN | wc -c)
-SIZE_MIN=$(java -jar $TOOLS/compiler.jar --compilation_level SIMPLE_OPTIMIZATIONS --warning_level VERBOSE --jscomp_error checkTypes --jscomp_off fileoverviewTags --externs $TOOLS/extern.js --js $IN | tee $OUT | wc -c)
+SIZE_MIN=$(java -jar $TOOLS/compiler.jar --js $IN | tee $OUT | wc -c)
 SIZE_GZIP=$(gzip -nfc --best $OUT | wc -c)
 
 echo "$SIZE_SRC bytes original"
