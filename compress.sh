@@ -3,15 +3,15 @@
 
 echo compress $1...
 
-TOOLS=../seajs/support/
+TOOLS=../seajs/tools/
 IN=src/$1/$1.js
 OUT=build/$1/$1.js
 
-if [ ! -d build/$1 ]
+if [ ! -d dist/$1 ]
   then
-    mkdir build/$1
+    mkdir dist/$1
 fi
-cp $IN build/$1/$1-debug.js
+cp $IN dist/$1/$1-debug.js
 
 SIZE_SRC=$(cat $IN | wc -c)
 SIZE_MIN=$(java -jar $TOOLS/compiler.jar --js $IN | tee $OUT | wc -c)
