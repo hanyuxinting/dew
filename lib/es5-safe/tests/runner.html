@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Test Runner</title>
+
+<link rel="stylesheet" href="../../../support/jasmine/jasmine.css">
+<script src="../../../support/jasmine/jasmine.js"></script>
+<script src="../../../support/jasmine/jasmine-html.js"></script>
+
+<script>
+
+  var IS_NATIVE = true;
+
+  if (location.search.indexOf('native') === -1) {
+    if (typeof console !== 'undefined') {
+      console.log('es5-safe is turned on.');
+    }
+
+
+    Function.prototype.bind = null;
+
+    Object.create = null;
+    Object.keys = null;
+
+    Array.isArray = null;
+
+    // iteration
+    Array.prototype.forEach = null;
+    Array.prototype.map = null;
+    Array.prototype.filter = null;
+    Array.prototype.every = null;
+    Array.prototype.some = null;
+
+    Array.prototype.reduce = null;
+    Array.prototype.reduceRight = null;
+
+    Array.prototype.indexOf = null;
+    Array.prototype.lastIndexOf = null;
+
+    String.prototype.trim = null;
+
+    Date.now = null;
+
+
+    IS_NATIVE = false;
+  }
+</script>
+
+<script src="../es5-safe.js"></script>
+
+<script src="function-bind-spec.js"></script>
+<script src="object-spec.js"></script>
+<script src="array-isarray-spec.js"></script>
+<script src="array-iteration-spec.js"></script>
+<script src="array-reduce-spec.js"></script>
+<script src="array-indexing-spec.js"></script>
+<script src="string-trim-spec.js"></script>
+<script src="date-spec.js"></script>
+
+</head>
+<body>
+
+<script>
+  jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+  jasmine.getEnv().execute();
+</script>
+
+</body>
+</html>
